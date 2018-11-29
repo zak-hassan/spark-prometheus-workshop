@@ -1,0 +1,35 @@
+apiVersion: v1
+data:
+  first_rules.yml: |2
+        groups:
+        - name: spark.rules
+          rules:
+          - alert: SparkOutage
+            expr: up == 0
+            for: 5s
+            labels:
+              severity: critical
+            annotations:
+              description: erik spark cluster is down and out
+              summary: erik spark Instance down
+  prometheus.yml: "# my global config\nglobal:\n  scrape_interval:     3s # Set the
+    scrape interval to every 15 seconds. Default is every 1 minute.\n  evaluation_interval:
+    3s # Evaluate rules every 15 seconds. The default is every 1 minute.\n  # scrape_timeout
+    is set to the global default (10s).\n\n# Alertmanager configuration\nalerting:\n
+    \ alertmanagers:\n  - static_configs:\n    - targets:\n      - alertmanager:9093\n\n#
+    Load rules once and periodically evaluate them according to the global 'evaluation_interval'.\nrule_files:\n
+    \ - \"first_rules.yml\"\n  # - \"second_rules.yml\"\n\n# A scrape configuration
+    containing exactly one endpoint to scrape:\n# Here it's Prometheus itself.\nscrape_configs:\n
+    \ # The job name is added as a label `job=<job_name>` to any timeseries scraped
+    from this config.\n  - job_name: 'prometheus'\n\n    # metrics_path defaults to
+    '/metrics'\n    # scheme defaults to 'http'.\n\n    static_configs:\n    - targets:
+    ['localhost:9090']\n\n  - job_name: 'spark-master'\n    static_configs:\n    -
+    targets: ['sparkdemo-metrics:7777']\n\n  - job_name: 'spark-worker-1'\n    static_configs:\n
+    \   - targets: ['10.129.1.254:7777']\n\n  - job_name: 'spark-worker-2'\n    static_configs:\n
+    \   - targets: ['10.129.1.253:7777']\n\n  - job_name: 'spark-worker-3'\n    static_configs:\n
+    \   - targets: ['10.129.1.251:7777']\n\n  - job_name: 'spark-worker-4'\n    static_configs:\n
+    \   - targets: ['10.129.1.252:7777']\n    \n\n  - job_name: 'spark-python2-driver-demo'\n
+    \   static_configs:\n    - targets: ['spark-python2:7777']\n"
+kind: ConfigMap
+metadata:
+  name: spark-prom-cfg

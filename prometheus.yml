@@ -1,7 +1,7 @@
 # my global config
 global:
-  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_interval:     1s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 1s # Evaluate rules every 15 seconds. The default is every 1 minute.
   # scrape_timeout is set to the global default (10s).
 
 # Alertmanager configuration
@@ -27,3 +27,27 @@ scrape_configs:
 
     static_configs:
     - targets: ['localhost:9090']
+
+  - job_name: 'spark-master'
+    static_configs:
+    - targets: ['sparkdemo-metrics:7777']
+
+  - job_name: 'spark-worker-1'
+    static_configs:
+    - targets: ['10.129.1.254:7777']
+
+  - job_name: 'spark-worker-2'
+    static_configs:
+    - targets: ['10.129.1.253:7777']
+
+  - job_name: 'spark-worker-3'
+    static_configs:
+    - targets: ['10.129.1.251:7777']
+
+  - job_name: 'spark-worker-4'
+    static_configs:
+    - targets: ['10.129.1.252:7777']
+
+  - job_name: 'spark-python2-driver-demo'
+    static_configs:
+    - targets: ['spark-python2:7777']
